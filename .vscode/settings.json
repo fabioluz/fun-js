@@ -1,0 +1,36 @@
+{
+  "editor.fontFamily": "'Fira Code Regular', Consolas, 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "terminal.integrated.shell.windows": "C:\\WINDOWS\\Sysnative\\bash.exe",
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          "entity.name.function",
+          "support.function",
+          "variable",
+          "variable.other.readwrite",
+          "meta.object-literal.key",
+          "support.variable.property",
+          "support.variable.object.process",
+          "support.variable.object.node",
+          "entity.name.tag",
+          "entity.name.variable.local.cs",
+          "support.variable.dom",
+          "support.variable.property.dom"
+        ],
+        "settings": {
+          "foreground": "#D4D4D4"
+        }
+      }
+      // {
+      //   "scope": [
+      //     "keyword.control"
+      //   ],
+      //   "settings": {
+      //     "foreground": "#c678dd"
+      //   }
+      // },
+    ]
+  }
+}

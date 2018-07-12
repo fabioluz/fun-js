@@ -1,0 +1,32 @@
+{
+  "name": "fun_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "npm run build && node -r dotenv/config dist/persistence/migrator",
+    "build": "rm -rf dist && babel src/ -d dist -s",
+    "serve": "npm run build && node -r dotenv/config dist/server"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "postgres-migrations": "^2.0.3"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^6.0.0",
+    "fluture": "^8.0.2",
+    "fluture-sanctuary-types": "^2.2.0",
+    "koa": "^2.5.2",
+    "pg": "^7.4.3",
+    "sanctuary": "^0.15.0",
+    "sanctuary-def": "^0.18.1",
+    "sanctuary-type-classes": "^9.0.0",
+    "sanctuary-type-identifiers": "^2.0.1",
+    "uuid": "^3.3.0"
+  }
+}
