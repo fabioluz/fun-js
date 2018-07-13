@@ -51,6 +51,7 @@ const query_I = sql => params =>
   compose (chainRej (toDatabaseError))
           (exec (sql) (params));
 
+          
 
 ////////////////////////////////////////////////////
 //  Export

@@ -15,13 +15,16 @@ const dbParams = {
 
 const migrationPath = 'src/persistence/migrations';
 
-const createDb = () => Future.encaseP2 (Migrations.createDb) (dbName, dbParams);
+const createDb = () => 
+  Future.encaseP2 (Migrations.createDb) (dbName, dbParams);
 
-const migrate = () => Future.encaseP2 (Migrations.migrate) (dbParams, migrationPath);
+const migrate = () => 
+  Future.encaseP2 (Migrations.migrate) (dbParams, migrationPath);
 
-const migration = chain (migrate) (createDb ());
-
-migration.fork (
-  error => console.error (`Error while running migration: ${error}`),
-  () => console.log ('Migration succeeded.')
-);
+// execute migration
+createDb ()
+  .chain (migrate)
+  .fork (
+    error => console.error (`Error while running migration: ${error}`),
+    () => console.log ('Migration succeeded.')
+  );

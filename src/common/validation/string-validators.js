@@ -7,9 +7,9 @@ const $ValErrorOrMaybeString = $.Either ($ValidationError) ($.Maybe ($.String));
 const $ValErrorOrString = $.Either ($ValidationError) ($.String);
 const $ValFn = $.Function ([$.Maybe ($.Any), $ValErrorOrMaybeString]);
 
-//
+////////////////////////////////////////////////////
 //  Algebra
-//
+////////////////////////////////////////////////////
 
 const validateString_A = [ $.Array ($ValFn), $.String, $.Any, $ValErrorOrString ];
 
@@ -21,9 +21,11 @@ const maxLength_A = [ $.Number, $.Maybe ($.String), $ValErrorOrMaybeString ];
 
 const email_A = [ $.Maybe ($.String), $ValErrorOrMaybeString ];
 
-//
+
+
+////////////////////////////////////////////////////
 //  Helpers
-//
+////////////////////////////////////////////////////
 
 const { prop, concat, isNothing, isJust, maybe, ifElse, Right, Left } = S;
 
@@ -35,19 +37,20 @@ const includes = term =>
   maybe (false) (x => x.includes (term));
 
 // toError :: String -> a -> Either ValidationError a
-const toError = msg => _ => {
-  return Left (ValidationError.of (msg));
-}
-  
+const toError = msg => _ => 
+  Left (ValidationError.of (msg));
+
 // string :: Maybe Any -> Either ValidationError (Maybe String)
 const string = 
   ifElse (x => isNothing (x) || typeof x.value === 'string')
          (Right)
          (toError ('$key must be a string'));
 
-//
+
+
+////////////////////////////////////////////////////
 //  Interpreter
-//  
+////////////////////////////////////////////////////
 
 // validateString_I :: [ValFn] -> String -> Any -> Either ValidationError String
 const validateString_I = fns => 
@@ -77,9 +80,11 @@ const email_I =
          (Right)
          (toError (`$key should be a valid email`));
 
-//
+
+         
+////////////////////////////////////////////////////
 //  Export
-//
+////////////////////////////////////////////////////
 
 export const validateString = 
   def ('validateString')

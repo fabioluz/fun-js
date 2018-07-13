@@ -5,12 +5,12 @@ import Future from 'fluture';
 import FutureTypes from 'fluture-sanctuary-types';
 
 const S = Sanctuary.create ({
-  checkTypes: true,
+  checkTypes: process.env.NODE_ENV !== 'production',
   env: Sanctuary.env.concat (FutureTypes.env)
 });
 
 const def = $.create ({
-  checkTypes: true,
+  checkTypes: process.env.NODE_ENV !== 'production',
   env: $.env.concat (FutureTypes.env)
 })
 
