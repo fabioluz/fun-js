@@ -8,6 +8,10 @@ var _fun = require('../../fun');
 
 var _error = require('../../common/types/error');
 
+var _request = require('../../common/types/request');
+
+var _response = require('../../common/types/response');
+
 var _user = require('../../model/user');
 
 var _database = require('../database');
@@ -16,7 +20,7 @@ var _database = require('../database');
 //  Algebra
 ///////////////////////////////////////////////////////
 
-const getAll_A = [_fun.$.PositiveInteger, _fun.$.Future(_error.$AppError)(_fun.$.Array(_fun.$.Object))];
+const getAll_A = [_request.$CommonListRequest, _fun.$.Future(_error.$AppError)(_fun.$.Array(_response.$UserResponse))];
 
 const insert_A = [_user.$User, _fun.$.Future(_error.$AppError)(_user.$User)];
 
@@ -24,22 +28,22 @@ const insert_A = [_user.$User, _fun.$.Future(_error.$AppError)(_user.$User)];
 //  Interpreter
 ///////////////////////////////////////////////////////
 
-const { map } = _fun.S;
+const { prop, compose, map, K } = _fun.S;
 
-const TAKE_AMOUNT = 10;
-
-// getAll_I :: Number -> Future DatabaseError (Array Object)
-const getAll_I = page => {
-  const sql = `SELECT id, email, fullname 
+// getAll_I :: CommonListRequest -> Future DatabaseError (Array UserResponse)
+const getAll_I = commonListReq => {
+  const { page, take } = commonListReq;
+  const sql = `SELECT id, email, fullname
                FROM users
                OFFSET $1
                LIMIT $2`;
 
-  const skip = (page - 1) * TAKE_AMOUNT;
-  const params = [skip, TAKE_AMOUNT];
+  const offset = (page - 1) * take;
+  const params = [offset, take];
 
   const queryResult = (0, _database.withConnection)((0, _database.query)(sql)(params));
-  return map(result => result.rows)(queryResult);
+
+  return compose(map(map(_response.UserResponse.of)))(map(prop('rows')))(queryResult);
 };
 
 // insert_I :: User -> Future DatabaseError User
@@ -48,7 +52,7 @@ const insert_I = user => {
   const params = [user.id, user.email, user.password, user.fullname];
 
   const queryResult = (0, _database.withConnection)((0, _database.query)(sql)(params));
-  return map(_ => user)(queryResult);
+  return map(K(user))(queryResult);
 };
 
 ///////////////////////////////////////////////////////

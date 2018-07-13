@@ -1,31 +1,37 @@
 'use strict';
 
-var _env = require('./common/types/env');
+var _index = require('./api/index');
 
-var _user = require('./model/user');
-
-var _userRepository = require('./persistence/repositories/user-repository');
-
-var _userRepository2 = _interopRequireDefault(_userRepository);
-
-var _userService = require('./service/user-service');
-
-var _userService2 = _interopRequireDefault(_userService);
+var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const user = _user.User.of({
-  id: 'asdf',
-  email: 'asdfsad@sdfsd.df',
-  password: 'asdfsdafsadf',
-  fullname: 'asdfsadf'
-});
+(0, _index2.default)(); // import { S } from './fun';
+// import { Env } from './common/types/env';
+// import { User } from './model/user';
+// import UserRepository from './persistence/repositories/user-repository';
+// import UserService from './service/user-service';
 
-const env = new _env.Env({
-  repositories: {
-    user: _userRepository2.default
-  }
-});
+// const user = User.of ({ 
+//   id: 'asdf',
+//   email: 'asdfsad@sdfsd.df',
+//   password: 'asdfsdafsadf',
+//   fullname: 'asdfsadf' 
+// });
 
-_userService2.default.getAll(1)(env).fork(console.error, console.log);
+// const env = new Env ({
+//   repositories: {
+//     user: UserRepository
+//   }
+// });
+
+// const reqParams  = {
+//   take: 10,
+//   page: 1,
+//   search: S.toMaybe (null)
+// };
+
+// UserService
+//   .getAll (reqParams) (env)
+//   .fork (console.error, console.log);
 //# sourceMappingURL=server.js.map

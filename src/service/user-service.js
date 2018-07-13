@@ -2,16 +2,36 @@ import { $, S, Future, def } from '../fun';
 import { $AppError } from '../common/types/error';
 import { $Env } from '../common/types/env';
 import { $CommonListRequest } from '../common/types/request';
-import { $UserResponse } from '../common/types/response';
+import { $UserResponse, UserResponse } from '../common/types/response';
 import { $User, validateUser, encryptUser } from '../model/user';
 
 ////////////////////////////////////////////////////
 //  Algebra
 ////////////////////////////////////////////////////
 
-const getAll_A = [ $CommonListRequest, $Env, $.Future ($AppError) ($.Array ($.Object)) ];
+const getAll_A = [ $CommonListRequest, $Env, $.Future ($AppError) ($.Array ($UserResponse)) ];
 
-const createUser_A = [ $.Object, $Env, $.Future ($AppError) ($User) ];
+const create_A = [ $.Object, $Env, $.Future ($AppError) ($UserResponse) ];
+
+
+
+////////////////////////////////////////////////////
+//  Helpers
+////////////////////////////////////////////////////
+
+const { map, invoke, pipe, pipeK } = S;
+
+// getUserRepository :: Env -> UserRepository
+const getUserRepository = env => 
+  env.repositories.user;
+
+// insertUser :: Env -> User -> Future AppError UserResponse
+const insertUser = env => user =>
+  pipe ([ 
+    getUserRepository,
+    invoke ('insert') (user),
+    map (UserResponse.of)
+  ]) (env);
 
 
 
@@ -19,30 +39,15 @@ const createUser_A = [ $.Object, $Env, $.Future ($AppError) ($User) ];
 //  Interpreter
 ////////////////////////////////////////////////////
 
-const { prop, invoke, pipe, pipeK } = S;
-
-// getUserRepository :: Env -> UserRepository
-const getUserRepository = env => 
-  env.repositories.user;
-
-// getAll_I :: Number -> Env -> Future AppError (Array Object)
-const getAll_I = page => env => 
+// getAll_I :: CommonListRequest -> Env -> Future AppError (Array UserResponse)
+const getAll_I = input => env => 
   pipe ([
     getUserRepository,
-    prop ('getAll'),
-    invoke (page)
+    invoke ('getAll') (input)
   ]) (env);
 
-// insertUser :: Env -> User -> Future AppError User
-const insertUser = user =>
-  pipe ([ 
-    getUserRepository,
-    prop ('insert'),
-    invoke (user)
-  ]);
-
-// createUser_I :: Object -> Env -> Future AppError User
-const createUser_I = input => env =>
+// createUser_I :: Object -> Env -> Future AppError UserResponse
+const create_I = input => env =>
   pipeK ([
     validateUser,
     encryptUser,
@@ -55,11 +60,11 @@ const createUser_I = input => env =>
 //  Export
 ////////////////////////////////////////////////////
 
-const createUser = 
-  def ('createUser')
+const create = 
+  def ('create')
       ({})
-      (createUser_A)
-      (createUser_I);
+      (create_A)
+      (create_I);
 
 const getAll =
   def ('getAll')
@@ -69,5 +74,5 @@ const getAll =
 
 export default {
   getAll,
-  createUser
+  create
 }

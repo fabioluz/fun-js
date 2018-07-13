@@ -30,10 +30,7 @@ const query_A = [ $.String, $.Any, $.Object, $.Future ($DatabaseError) ($.Object
 //  Interpreter
 /////////////////////////////////////////////////////
 
-const { chainRej } = S;
-
-// toDatabaseError :: Error -> Future DatabaseError a
-const toDatabaseError = error => Future.reject (DatabaseError.of (error));
+const { compose, chainRej } = S;
 
 // withConnection_I :: Client -> Future a b
 const withConnection_I = Future.hook (
@@ -41,12 +38,18 @@ const withConnection_I = Future.hook (
   closeConnection
 );
 
-// query_I :: String -> [Any] -> Client -> Future DatabseError QueryResult
-const query_I = sql => params => client => {
-  const exec = Future.encaseP2 (client.query.bind(client));
-  return chainRej (toDatabaseError) (exec (sql, params));
-};
+// toDatabaseError :: Error -> Future DatabaseError a
+// const toDatabaseError = error => Future.reject (DatabaseError.of (error));
+const toDatabaseError = compose (Future.reject) (DatabaseError.of);
 
+// exec :: String -> Array Any -> Client -> Future DatabseError QueryResult
+const exec = sql => params => client =>
+  Future.encaseP2 (client.query.bind(client)) (sql) (params);
+
+// query_I :: String -> Array Any -> Client -> Future DatabseError QueryResult
+const query_I = sql => params =>
+  compose (chainRej (toDatabaseError))
+          (exec (sql) (params));
 
 
 ////////////////////////////////////////////////////

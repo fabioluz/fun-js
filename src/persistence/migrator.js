@@ -3,14 +3,14 @@ import { S, Future } from '../fun';
 
 const { chain } = S;
 
-const dbName = process.env.DB_NAME;
+const dbName = process.env.PGDATABASE;
 
 const dbParams = {
-  database: process.env.DB_NAME,
-  user : process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  port: Number (process.env.DB_PORT)
+  database: process.env.PGDATABASE,
+  user : process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  host: process.env.PGHOST,
+  port: Number (process.env.PGPORT)
 }
 
 const migrationPath = 'src/persistence/migrations';

@@ -19,12 +19,12 @@ const insert_A = [ $User, $.Future ($AppError) ($User) ];
 //  Interpreter
 ///////////////////////////////////////////////////////
 
-const { map } = S;
+const { prop, compose, map, K } = S;
 
 // getAll_I :: CommonListRequest -> Future DatabaseError (Array UserResponse)
 const getAll_I = commonListReq => {
   const { page, take } = commonListReq;
-  const sql = `SELECT id, email, fullname 
+  const sql = `SELECT id, email, fullname
                FROM users
                OFFSET $1
                LIMIT $2`;
@@ -35,7 +35,7 @@ const getAll_I = commonListReq => {
   const queryResult = withConnection (query (sql) (params));
 
   return compose
-         (map (UserResponse.of))
+         (map (map (UserResponse.of)))
          (map (prop ('rows')))
          (queryResult);
 };
@@ -46,7 +46,7 @@ const insert_I = user => {
   const params = [ user.id, user.email, user.password, user.fullname ];
 
   const queryResult = withConnection (query (sql) (params));
-  return map (_ => user) (queryResult);
+  return map (K (user)) (queryResult);
 };
 
 

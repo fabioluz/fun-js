@@ -35,19 +35,19 @@ const query_A = [_fun.$.String, _fun.$.Any, _fun.$.Object, _fun.$.Future(_error.
 //  Interpreter
 /////////////////////////////////////////////////////
 
-const { chainRej } = _fun.S;
-
-// toDatabaseError :: Error -> Future DatabaseError a
-const toDatabaseError = error => _fun.Future.reject(_error.DatabaseError.of(error));
+const { compose, chainRej } = _fun.S;
 
 // withConnection_I :: Client -> Future a b
 const withConnection_I = _fun.Future.hook(openConnection(), closeConnection);
 
-// query_I :: String -> [Any] -> Client -> Future DatabseError QueryResult
-const query_I = sql => params => client => {
-  const exec = _fun.Future.encaseP2(client.query.bind(client));
-  return chainRej(toDatabaseError)(exec(sql, params));
-};
+// toDatabaseError :: Error -> Future DatabaseError a
+const toDatabaseError = error => _fun.Future.reject(_error.DatabaseError.of(error));
+
+// exec :: String -> Array Any -> Client -> Future DatabseError QueryResult
+const exec = sql => params => client => _fun.Future.encaseP2(client.query.bind(client))(sql)(params);
+
+// query_I :: String -> Array Any -> Client -> Future DatabseError QueryResult
+const query_I = sql => params => compose(chainRej(toDatabaseError))(exec(sql)(params));
 
 ////////////////////////////////////////////////////
 //  Export
