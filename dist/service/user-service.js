@@ -41,7 +41,7 @@ const insertUser = env => user => pipe([getUserRepository, invoke('insert')(user
 ////////////////////////////////////////////////////
 
 // getAll_I :: CommonListRequest -> Env -> Future AppError (Array UserResponse)
-const getAll_I = input => env => pipe([getUserRepository, invoke('getAll')(input)])(env);
+const getAll_I = input => env => pipe([getUserRepository, invoke('getAll')(input), map(map(_response.UserResponse.of))])(env);
 
 // createUser_I :: Object -> Env -> Future AppError UserResponse
 const create_I = input => env => pipeK([_user.validateUser, _user.encryptUser, insertUser(env)])(_fun.Future.of(input));

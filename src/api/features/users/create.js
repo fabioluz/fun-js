@@ -1,8 +1,14 @@
 import { S } from '../../../fun';
 import { run, formatValError } from '../../utils';
 import UserService from '../../../service/user-service';
+import { ValidationError } from '../../../common/types/error';
 
-const { ifElse } = S;
+const { K, ifElse } = S;
+
+// getErrorStatus :: AppError -> Number
+const getErrorStatus = ifElse
+                       (x => x instanceof ValidationError)
+                       (K (422)) (K (500));
 
 // onResolve :: Context -> Next -> Void
 const onResolve = ctx => next => users => {
@@ -14,7 +20,7 @@ const onResolve = ctx => next => users => {
 // onReject :: Context -> Next -> Void
 const onReject = ctx => next => error => {
   ctx.body = error;
-  ctx.status = error.isSafe ? 422 : 500;
+  ctx.status = getErrorStatus (error);
   next ();
 };
 

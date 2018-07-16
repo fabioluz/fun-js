@@ -26,7 +26,6 @@ const createDb = () => _fun.Future.encaseP2(_postgresMigrations2.default.createD
 
 const migrate = () => _fun.Future.encaseP2(_postgresMigrations2.default.migrate)(dbParams, migrationPath);
 
-const migration = chain(migrate)(createDb());
-
-migration.fork(error => console.error(`Error while running migration: ${error}`), () => console.log('Migration succeeded.'));
+// execute migration
+createDb().chain(migrate).fork(error => console.error(`Error while running migration: ${error}`), () => console.log('Migration succeeded.'));
 //# sourceMappingURL=migrator.js.map

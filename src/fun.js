@@ -12,7 +12,7 @@ const S = Sanctuary.create ({
 const def = $.create ({
   checkTypes: process.env.NODE_ENV !== 'production',
   env: $.env.concat (FutureTypes.env)
-})
+});
 
 $.a = $.TypeVariable ('a');
 $.b = $.TypeVariable ('b');

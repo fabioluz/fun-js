@@ -28,12 +28,12 @@ var _flutureSanctuaryTypes2 = _interopRequireDefault(_flutureSanctuaryTypes);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const S = _sanctuary2.default.create({
-  checkTypes: true,
+  checkTypes: process.env.NODE_ENV !== 'production',
   env: _sanctuary2.default.env.concat(_flutureSanctuaryTypes2.default.env)
 });
 
 const def = _sanctuaryDef2.default.create({
-  checkTypes: true,
+  checkTypes: process.env.NODE_ENV !== 'production',
   env: _sanctuaryDef2.default.env.concat(_flutureSanctuaryTypes2.default.env)
 });
 

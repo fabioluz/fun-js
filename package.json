@@ -14,11 +14,11 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "dotenv": "^6.0.0",
     "postgres-migrations": "^2.0.3"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "dotenv": "^6.0.0",
     "fluture": "^8.0.2",
     "fluture-sanctuary-types": "^2.2.0",
     "koa": "^2.5.2",

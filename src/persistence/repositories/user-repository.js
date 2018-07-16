@@ -1,15 +1,14 @@
 import { $, S, def } from '../../fun';
 import { $AppError } from '../../common/types/error';
 import { $CommonListRequest } from '../../common/types/request';
-import { $UserResponse, UserResponse } from '../../common/types/response';
-import { $User } from '../../model/user';
+import { $User, User } from '../../model/user';
 import { withConnection, query } from '../database';
 
 ///////////////////////////////////////////////////////
 //  Algebra
 ///////////////////////////////////////////////////////
 
-const getAll_A = [ $CommonListRequest, $.Future ($AppError) ($.Array ($UserResponse)) ];
+const getAll_A = [ $CommonListRequest, $.Future ($AppError) ($.Array ($User)) ];
 
 const insert_A = [ $User, $.Future ($AppError) ($User) ];
 
@@ -21,7 +20,7 @@ const insert_A = [ $User, $.Future ($AppError) ($User) ];
 
 const { prop, compose, map, K } = S;
 
-// getAll_I :: CommonListRequest -> Future DatabaseError (Array UserResponse)
+// getAll_I :: CommonListRequest -> Future DatabaseError (Array $User)
 const getAll_I = commonListReq => {
   const { page, take } = commonListReq;
   const sql = `SELECT id, email, fullname
@@ -35,7 +34,7 @@ const getAll_I = commonListReq => {
   const queryResult = withConnection (query (sql) (params));
 
   return compose
-         (map (map (UserResponse.of)))
+         (map (map (User.of)))
          (map (prop ('rows')))
          (queryResult);
 };

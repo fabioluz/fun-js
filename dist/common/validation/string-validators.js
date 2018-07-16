@@ -16,9 +16,9 @@ const $ValErrorOrMaybeString = _fun.$.Either(_error.$ValidationError)(_fun.$.May
 const $ValErrorOrString = _fun.$.Either(_error.$ValidationError)(_fun.$.String);
 const $ValFn = _fun.$.Function([_fun.$.Maybe(_fun.$.Any), $ValErrorOrMaybeString]);
 
-//
+////////////////////////////////////////////////////
 //  Algebra
-//
+////////////////////////////////////////////////////
 
 const validateString_A = [_fun.$.Array($ValFn), _fun.$.String, _fun.$.Any, $ValErrorOrString];
 
@@ -30,9 +30,9 @@ const maxLength_A = [_fun.$.Number, _fun.$.Maybe(_fun.$.String), $ValErrorOrMayb
 
 const email_A = [_fun.$.Maybe(_fun.$.String), $ValErrorOrMaybeString];
 
-//
+////////////////////////////////////////////////////
 //  Helpers
-//
+////////////////////////////////////////////////////
 
 const { prop, concat, isNothing, isJust, maybe, ifElse, Right, Left } = _fun.S;
 
@@ -43,16 +43,14 @@ const length = maybe(0)(prop('length'));
 const includes = term => maybe(false)(x => x.includes(term));
 
 // toError :: String -> a -> Either ValidationError a
-const toError = msg => _ => {
-  return Left(_error.ValidationError.of(msg));
-};
+const toError = msg => _ => Left(_error.ValidationError.of(msg));
 
 // string :: Maybe Any -> Either ValidationError (Maybe String)
 const string = ifElse(x => isNothing(x) || typeof x.value === 'string')(Right)(toError('$key must be a string'));
 
-//
+////////////////////////////////////////////////////
 //  Interpreter
-//  
+////////////////////////////////////////////////////
 
 // validateString_I :: [ValFn] -> String -> Any -> Either ValidationError String
 const validateString_I = fns => (0, _commonValidators.validate)(concat([string])(fns));
@@ -69,9 +67,9 @@ const maxLength_I = len => ifElse(x => isNothing(x) || length(x) <= len)(Right)(
 // email_I :: Maybe String -> Either ValidationError (Maybe String)
 const email_I = ifElse(x => isNothing(x) || includes('@')(x))(Right)(toError(`$key should be a valid email`));
 
-//
+////////////////////////////////////////////////////
 //  Export
-//
+////////////////////////////////////////////////////
 
 const validateString = exports.validateString = (0, _fun.def)('validateString')({})(validateString_A)(validateString_I);
 

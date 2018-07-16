@@ -13,7 +13,7 @@ var _dependencyResolver2 = _interopRequireDefault(_dependencyResolver);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const { ifElse, I, K, toMaybe } = _fun.S;
+const { I, K, ifElse, toMaybe } = _fun.S;
 
 // prefix :: String -> Router -> Router
 const prefix = exports.prefix = name => router => router.prefix(name);
@@ -30,7 +30,7 @@ const run = exports.run = fn => onResolve => onReject => fn(_dependencyResolver2
 // positiveInt :: Any -> Number -> Number
 const positiveInt = exports.positiveInt = otherwise => ifElse(x => typeof x === 'number' && Number.isInteger(x) && x > 0)(I)(K(otherwise));
 
-// toCommonListReq :: Object -> CommonListRequest
+// toCommonListReq :: KoaRequest -> CommonListRequest
 const toCommonListReq = exports.toCommonListReq = query => ({
   page: positiveInt(1)(query.page),
   take: positiveInt(10)(query.take),

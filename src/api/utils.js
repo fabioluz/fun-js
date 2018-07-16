@@ -1,7 +1,7 @@
 import { S } from '../fun';
 import env from './dependency-resolver';
 
-const { ifElse, I, K, toMaybe } = S;
+const { I, K, ifElse, toMaybe } = S;
 
 // prefix :: String -> Router -> Router
 export const prefix = name => router =>
@@ -28,13 +28,12 @@ export const positiveInt = otherwise =>
             && x > 0
          ) (I) (K (otherwise));
 
-// toCommonListReq :: Object -> CommonListRequest
-export const toCommonListReq = query => 
-  ({
-    page: positiveInt (1)  (query.page),
-    take: positiveInt (10) (query.take),
-    search: toMaybe (query.search)
-  });
+// toCommonListReq :: KoaRequest -> CommonListRequest
+export const toCommonListReq = query => ({
+  page: positiveInt (1)  (query.page),
+  take: positiveInt (10) (query.take),
+  search: toMaybe (query.search)
+});
 
 export const formatValError = error => ({
   error: error.value

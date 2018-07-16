@@ -43,7 +43,8 @@ const insertUser = env => user =>
 const getAll_I = input => env => 
   pipe ([
     getUserRepository,
-    invoke ('getAll') (input)
+    invoke ('getAll') (input),
+    map ( map (UserResponse.of))
   ]) (env);
 
 // createUser_I :: Object -> Env -> Future AppError UserResponse
