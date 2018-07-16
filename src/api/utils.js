@@ -15,7 +15,7 @@ export const get = route => middlware => router =>
 export const post = route => middlware => router =>
   router.post (route, middlware);
 
-// run :: (Env -> Future a b) -> (b -> Middleware) -> (a -> Middleware)
+// run :: (Env -> Future a b) -> (b -> Middleware) -> (a -> Middleware) -> Middleware
 export const run = fn => onResolve => onReject =>
   fn (env).promise ()
           .then (onResolve)

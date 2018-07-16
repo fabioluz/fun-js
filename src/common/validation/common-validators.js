@@ -47,4 +47,8 @@ const validate_I = fns => key => value =>
           (pipeK (fns))
           (Right (toMaybe (value)));
 
-export const validate = def ('validate') ({}) (validate_A) (validate_I);
+export const validate = 
+  def ('validate') 
+  ({}) 
+  (validate_A)
+  (validate_I);

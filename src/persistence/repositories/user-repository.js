@@ -45,6 +45,7 @@ const insert_I = user => {
   const params = [ user.id, user.email, user.password, user.fullname ];
 
   const queryResult = withConnection (query (sql) (params));
+  
   return map (K (user)) (queryResult);
 };
 
