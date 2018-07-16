@@ -2,10 +2,10 @@
 Fun JS is a NodeJS application created to learn and apply functional-programming principles for real-world applications. Any corrections or additional implemantations are welcome! 
 
 ### Libraries Used
-* [Sanctuary](https://github.com/sanctuary-js/sanctuary) for a run-time type checking and helper functions.
+* [Sanctuary](https://github.com/sanctuary-js/sanctuary) for a run-time type checking and helper functions;
 * [Fluture](https://github.com/fluture-js/Fluture) for a monadic data structure alterative to Promises;
-* [Koa](https://github.com/koajs/koa) for serving a Restful API.
-* [Postgres-Migrations](https://github.com/ThomWright/postgres-migrations) for an immutable database migration system. 
+* [Koa](https://github.com/koajs/koa) for serving a Restful API;
+* [Postgres-Migrations](https://github.com/ThomWright/postgres-migrations) for an immutable database migration system.
 
 ### Running the app
 1. Clone the app and install the packages;
