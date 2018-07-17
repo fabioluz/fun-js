@@ -16,14 +16,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const { toMaybe } = _fun.S;
 
-// onResolve :: Context -> Next -> Void
+// onResolve :: Context -> Next -> Array Users -> Void
 const onResolve = ctx => next => users => {
   ctx.body = users;
   ctx.status = 200;
   next();
 };
 
-// onResolve :: Context -> Next -> Void
+// onResolve :: Context -> Next -> AppError -> Void
 const onReject = ctx => next => error => {
   ctx.body = error;
   ctx.status = 500;
@@ -32,9 +32,9 @@ const onReject = ctx => next => error => {
 
 const getAll = (ctx, next) => {
   const params = {
-    page: 1,
-    take: 10,
-    search: toMaybe(null)
+    page: 1, //to be implemented
+    take: 10, //to be implemented
+    search: toMaybe(null) //to be implemented
   };
 
   return (0, _utils.run)(_userService2.default.getAll(params))(onResolve(ctx)(next))(onReject(ctx)(next));

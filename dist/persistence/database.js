@@ -41,7 +41,6 @@ const { compose, chainRej } = _fun.S;
 const withConnection_I = _fun.Future.hook(openConnection(), closeConnection);
 
 // toDatabaseError :: Error -> Future DatabaseError a
-// const toDatabaseError = error => Future.reject (DatabaseError.of (error));
 const toDatabaseError = compose(_fun.Future.reject)(_error.DatabaseError.of);
 
 // exec :: String -> Array Any -> Client -> Future DatabseError QueryResult

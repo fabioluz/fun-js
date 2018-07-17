@@ -1,5 +1,5 @@
 # Fun JS
-Fun JS is a NodeJS application created to learn and apply functional-programming principles for real-world applications. Any corrections or additional implemantations are welcome! 
+Fun JS is a NodeJS application created to learn and apply functional-programming principles for real-world applications. Any corrections or additional implementations are welcome! 
 
 ### Libraries Used
 * [Sanctuary](https://github.com/sanctuary-js/sanctuary) for a run-time type checking and helper functions;

@@ -24,7 +24,7 @@ const get = exports.get = route => middlware => router => router.get(route, midd
 // post :: String -> Middleware -> Router -> Router
 const post = exports.post = route => middlware => router => router.post(route, middlware);
 
-// run :: (Env -> Future a b) -> (b -> Middleware) -> (a -> Middleware)
+// run :: (Env -> Future a b) -> (b -> Middleware) -> (a -> Middleware) -> Middleware
 const run = exports.run = fn => onResolve => onReject => fn(_dependencyResolver2.default).promise().then(onResolve).catch(onReject);
 
 // positiveInt :: Any -> Number -> Number

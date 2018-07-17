@@ -12,11 +12,11 @@ const $ValFn = $.Function ([$.Any, $ValErrorOrMaybeA]);
 //  Algebra
 ////////////////////////////////////////////////////
 
-const transform_A = [$.String, $.String, $ValidationError, $ValidationError];
+const transform_A = [ $.String, $.String, $ValidationError, $ValidationError ];
 
-const format_A = [$.String, $ValErrorOrMaybeA, $ValErrorOrAny];
+const format_A = [ $.String, $ValErrorOrMaybeA, $ValErrorOrAny ];
 
-const validate_A = [$.Array ($ValFn), $.String, $.Any, $ValErrorOrAny];
+const validate_A = [ $.Array ($ValFn), $.String, $.Any, $ValErrorOrAny ];
 
 
 
@@ -49,6 +49,6 @@ const validate_I = fns => key => value =>
 
 export const validate = 
   def ('validate') 
-  ({}) 
-  (validate_A)
-  (validate_I);
+      ({}) 
+      (validate_A)
+      (validate_I);

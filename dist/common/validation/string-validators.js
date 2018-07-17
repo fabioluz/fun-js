@@ -34,19 +34,13 @@ const email_A = [_fun.$.Maybe(_fun.$.String), $ValErrorOrMaybeString];
 //  Helpers
 ////////////////////////////////////////////////////
 
-const { prop, concat, isNothing, isJust, maybe, ifElse, Right, Left } = _fun.S;
-
-// length :: Maybe String -> Number
-const length = maybe(0)(prop('length'));
-
-// includes :: String -> Maybe String -> Boolean
-const includes = term => maybe(false)(x => x.includes(term));
+const { concat, maybe, ifElse, Right, Left } = _fun.S;
 
 // toError :: String -> a -> Either ValidationError a
 const toError = msg => _ => Left(_error.ValidationError.of(msg));
 
 // string :: Maybe Any -> Either ValidationError (Maybe String)
-const string = ifElse(x => isNothing(x) || typeof x.value === 'string')(Right)(toError('$key must be a string'));
+const string = ifElse(maybe(true)(x => typeof x === 'string'))(Right)(toError('$key must be a string'));
 
 ////////////////////////////////////////////////////
 //  Interpreter
@@ -56,16 +50,16 @@ const string = ifElse(x => isNothing(x) || typeof x.value === 'string')(Right)(t
 const validateString_I = fns => (0, _commonValidators.validate)(concat([string])(fns));
 
 // notEmpty_I :: Maybe String -> Either ValidationError (Maybe String)
-const notEmpty_I = ifElse(x => isJust(x) && x.value !== '')(Right)(toError('$key is required'));
+const notEmpty_I = ifElse(maybe(false)(x => x !== ''))(Right)(toError('$key is required'));
 
 // minLength_I :: Number -> Maybe String -> Either ValidationError (Maybe String)
-const minLength_I = len => ifElse(x => isNothing(x) || length(x) >= len)(Right)(toError(`$key cannot be shorter than ${len} characters`));
+const minLength_I = len => ifElse(maybe(true)(x => x.length >= len))(Right)(toError(`$key cannot be shorter than ${len} characters`));
 
 // maxLength_I :: Number -> Maybe String -> Either ValidationError (Maybe String)
-const maxLength_I = len => ifElse(x => isNothing(x) || length(x) <= len)(Right)(toError(`$key cannot be longer than ${len} characters`));
+const maxLength_I = len => ifElse(maybe(true)(x => x.length <= len))(Right)(toError(`$key cannot be longer than ${len} characters`));
 
 // email_I :: Maybe String -> Either ValidationError (Maybe String)
-const email_I = ifElse(x => isNothing(x) || includes('@')(x))(Right)(toError(`$key should be a valid email`));
+const email_I = ifElse(maybe(true)(x => x.includes('@')))(Right)(toError(`$key should be a valid email`));
 
 ////////////////////////////////////////////////////
 //  Export

@@ -25,6 +25,8 @@ const errorFormatter = (ctx, next) => {
     ctx.body = null;
     return next ();
   }
+
+  next ();
 };
 
 export default () => errorFormatter;

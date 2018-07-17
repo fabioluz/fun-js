@@ -21,14 +21,14 @@ const { K, ifElse } = _fun.S;
 // getErrorStatus :: AppError -> Number
 const getErrorStatus = ifElse(x => x instanceof _error.ValidationError)(K(422))(K(500));
 
-// onResolve :: Context -> Next -> Void
+// onResolve :: Context -> Next -> Array Users -> Void
 const onResolve = ctx => next => users => {
   ctx.body = users;
   ctx.status = 200;
   next();
 };
 
-// onReject :: Context -> Next -> Void
+// onReject :: Context -> Next -> AppError -> Void
 const onReject = ctx => next => error => {
   ctx.body = error;
   ctx.status = getErrorStatus(error);

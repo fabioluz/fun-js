@@ -10,6 +10,8 @@ import { withConnection, query } from '../database';
 
 const getAll_A = [ $CommonListRequest, $.Future ($AppError) ($.Array ($User)) ];
 
+const getByEmail_A = [ $.String, $.Future ($AppError) ($.Maybe ($User)) ];
+
 const insert_A = [ $User, $.Future ($AppError) ($User) ];
 
 
@@ -18,9 +20,9 @@ const insert_A = [ $User, $.Future ($AppError) ($User) ];
 //  Interpreter
 ///////////////////////////////////////////////////////
 
-const { prop, compose, map, K } = S;
+const { prop, compose, pipe, map, head, K } = S;
 
-// getAll_I :: CommonListRequest -> Future DatabaseError (Array $User)
+// getAll_I :: CommonListRequest -> Future DatabaseError (Array User)
 const getAll_I = commonListReq => {
   const { page, take } = commonListReq;
   const sql = `SELECT id, email, fullname
@@ -38,6 +40,23 @@ const getAll_I = commonListReq => {
          (map (prop ('rows')))
          (queryResult);
 };
+
+// getByEmail_I :: String -> Future DatabaseError (Maybe User)
+const getByEmail_I = email => {
+  const sql = `SELECT id, email, fullname 
+               FROM users 
+               WHERE email = $1`;
+
+  const params = [ email ];
+
+  const queryResult = withConnection (query (sql) (params));
+
+  return pipe ([
+    map (prop ('rows')),
+    map (head),
+    map (map (User.of))
+  ]) (queryResult);
+}
 
 // insert_I :: User -> Future DatabaseError User
 const insert_I = user => {
@@ -61,6 +80,12 @@ const getAll =
       (getAll_A)
       (getAll_I);
 
+const getByEmail =
+  def ('getByEmail')
+      ({})
+      (getByEmail_A)
+      (getByEmail_I);
+
 const insert = 
   def ('insert')
       ({})
@@ -69,5 +94,6 @@ const insert =
 
 export default {
   getAll,
+  getByEmail,
   insert
 }

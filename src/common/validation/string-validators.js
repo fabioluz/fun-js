@@ -27,14 +27,7 @@ const email_A = [ $.Maybe ($.String), $ValErrorOrMaybeString ];
 //  Helpers
 ////////////////////////////////////////////////////
 
-const { prop, concat, isNothing, isJust, maybe, ifElse, Right, Left } = S;
-
-// length :: Maybe String -> Number
-const length = maybe (0) (prop ('length'));
-
-// includes :: String -> Maybe String -> Boolean
-const includes = term => 
-  maybe (false) (x => x.includes (term));
+const { concat, maybe, ifElse, Right, Left } = S;
 
 // toError :: String -> a -> Either ValidationError a
 const toError = msg => _ => 
@@ -42,7 +35,7 @@ const toError = msg => _ =>
 
 // string :: Maybe Any -> Either ValidationError (Maybe String)
 const string = 
-  ifElse (x => isNothing (x) || typeof x.value === 'string')
+  ifElse (maybe (true) (x => typeof x === 'string'))
          (Right)
          (toError ('$key must be a string'));
 
@@ -58,25 +51,25 @@ const validateString_I = fns =>
 
 // notEmpty_I :: Maybe String -> Either ValidationError (Maybe String)
 const notEmpty_I = 
-  ifElse (x => isJust (x) && x.value !== '')
+  ifElse (maybe (false) (x => x !== ''))
          (Right)
          (toError ('$key is required'));
 
 // minLength_I :: Number -> Maybe String -> Either ValidationError (Maybe String)
 const minLength_I = len =>
-  ifElse (x => isNothing (x) || length (x) >= len)
+  ifElse (maybe (true) (x => x.length >= len))
          (Right)
          (toError (`$key cannot be shorter than ${len} characters`));
 
 // maxLength_I :: Number -> Maybe String -> Either ValidationError (Maybe String)
 const maxLength_I = len =>
-  ifElse (x => isNothing (x) || length (x) <= len)
+  ifElse (maybe (true) (x => x.length <= len))
          (Right)
          (toError (`$key cannot be longer than ${len} characters`));
 
 // email_I :: Maybe String -> Either ValidationError (Maybe String)
 const email_I =
-  ifElse (x => isNothing (x) || includes ('@') (x))
+  ifElse (maybe (true) (x => x.includes ('@')))
          (Right)
          (toError (`$key should be a valid email`));
 

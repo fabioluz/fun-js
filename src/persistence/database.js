@@ -39,7 +39,6 @@ const withConnection_I = Future.hook (
 );
 
 // toDatabaseError :: Error -> Future DatabaseError a
-// const toDatabaseError = error => Future.reject (DatabaseError.of (error));
 const toDatabaseError = compose (Future.reject) (DatabaseError.of);
 
 // exec :: String -> Array Any -> Client -> Future DatabseError QueryResult
