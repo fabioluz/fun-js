@@ -25,11 +25,10 @@ const errorFormatter = (ctx, next) => {
     return next();
   }
 
-  if (process.env.NODE_ENV === 'production') {
-    ctx.body = null;
-    return next();
-  }
-
+  // ctx.app.emit ('error', error, ctx);
+  console.error(ctx.body.stack);
+  ctx.status = 500;
+  ctx.body = {};
   next();
 };
 
