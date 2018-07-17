@@ -1,15 +1,15 @@
 {
   "name": "fun_js",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A functional NodeJS application example",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "npm run build && node -r dotenv/config dist/persistence/migrator",
     "build": "rm -rf dist && babel src/ -d dist -s",
     "serve": "npm run build && node -r dotenv/config dist/server"
   },
-  "author": "",
+  "author": "Fabio Luz",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -31,5 +31,9 @@
     "sanctuary-type-classes": "^9.0.0",
     "sanctuary-type-identifiers": "^2.0.1",
     "uuid": "^3.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabioluz/fun-js.git"
   }
 }

@@ -56,7 +56,15 @@ const getByEmail_I = email => {
 
   const queryResult = (0, _database.withConnection)((0, _database.query)(sql)(params));
 
-  return pipe([map(prop('rows')), map(head), map(map(_user.User.of))])(queryResult);
+  // return pipe ([
+  //   map (prop ('rows')),
+  //   map (head),
+  //   map (map (User.of))
+  // ]) (queryResult);
+
+  const s = pipe([map(prop('rows')), map(head), map(map(_user.User.of))])(queryResult);
+
+  return s;
 };
 
 // insert_I :: User -> Future DatabaseError User
