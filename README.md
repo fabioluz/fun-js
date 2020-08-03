@@ -39,6 +39,6 @@ There are current 2 routes available:
 Try to change/remove the fields and see what happens :)
 
 
-### Filosofy
+### Philosofy
 The idea of this app is to separate the algebra from the interpretation of the functions, as if we were using a strongly-typed language. I'm still not sure whether it's really make sense, so I created this application to test the concepts and get reviews and pull-requests from other people. 
 
